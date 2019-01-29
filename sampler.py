@@ -36,6 +36,21 @@ class Sampler:
         self.mixing_matrix_evaluator = self.mixing_matrix.evaluator(self.instrument.Frequencies)
         print("End of initialisation")
 
+    def __getstate__(self):
+        state_dict = self.__dict__.copy()
+        del state_dict["mixing_matrix_evaluator"]
+        del state_dict["cosmo"]
+        del state_dict["mixing_matrix"]
+        del state_dict["components"]
+        return state_dict
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.cosmo = Class()
+        self.components = [CMB(), Dust(150.), Synchrotron(150.)]
+        self.mixing_matrix = MixingMatrix(*self.components)
+        self.mixing_matrix_evaluator = self.mixing_matrix.evaluator(self.instrument.Frequencies)
+
     def sample_normal(self, mu, sigma, s = None):
         return np.random.multivariate_normal(mu, sigma, s)
 
