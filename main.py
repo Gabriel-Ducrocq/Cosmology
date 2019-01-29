@@ -40,6 +40,7 @@ def main(NSIDE):
         pickle.dump(results, f)
 
     print(time_elapsed)
+    print(len(results))
 
 if __name__=='__main__':
     main(NSIDE)
