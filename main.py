@@ -4,7 +4,6 @@ from utils import RBF_kernel, compute_discrepency
 import pickle
 import multiprocessing as mp
 import time
-import dill
 
 NSIDE = 4
 sigma_rbf = 100000
