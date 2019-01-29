@@ -8,7 +8,7 @@ import time
 NSIDE = 4
 sigma_rbf = 100000
 N_sample = 100
-N_PROCESS_MAX = 50
+N_PROCESS_MAX = 20
 
 
 
@@ -39,6 +39,7 @@ def main(NSIDE):
             p.join()
 
         all_results += results
+        print("ENDENDENDENDENDEND")
 
     time_elapsed = time.clock() - time_start
 
