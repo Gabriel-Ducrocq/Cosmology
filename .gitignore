@@ -1,0 +1,5 @@
+*.fits
+*.xml
+*.iml
+.DS_Store
+B3DCMB/DS_Store.
