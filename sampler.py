@@ -1,7 +1,6 @@
 import numpy as np
 from fgbuster.mixingmatrix import MixingMatrix
 from fgbuster.observation_helpers import get_instrument
-import numba
 import healpy as hp
 from classy import Class
 import pysm
