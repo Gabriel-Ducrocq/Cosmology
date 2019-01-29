@@ -27,20 +27,7 @@ def main(NSIDE):
     reference_data = np.load("B3DCMB/reference_data.npy")
     sampler = Sampler(NSIDE)
     time_start = time.clock()
-    '''
-    processes = [mp.Process(target=pipeline, args=(sampler, reference_data, output, )) for _ in range(N_sample)]
-    for i in range(int(np.floor(N_sample/N_PROCESS_MAX))):
-        for p in processes:
-            p.start()
 
-        results = [output.get() for p in processes]
-        for p in processes:
-            p.join()
-
-        all_results += results
-        print("ENDENDENDENDENDEND")
-
-    '''
     pool = mp.Pool()
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.clock() - time_start
