@@ -30,7 +30,7 @@ def main(NSIDE):
     sampler = Sampler(NSIDE)
     time_start = time.clock()
     processes = [mp.Process(target=pipeline, args=(sampler, reference_data, output, )) for _ in range(N_sample)]
-    for i in range(np.floor(N_sample/N_PROCESS_MAX)):
+    for i in range(int(np.floor(N_sample/N_PROCESS_MAX))):
         for p in processes:
             p.start()
 
