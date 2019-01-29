@@ -7,7 +7,7 @@ import time
 
 NSIDE = 4
 sigma_rbf = 100000
-N_sample = 20
+N_sample = 50
 
 
 
