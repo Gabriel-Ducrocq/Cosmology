@@ -7,7 +7,8 @@ import time
 
 NSIDE = 4
 sigma_rbf = 100000
-N_sample = 70
+N_sample = 100
+N_PROCESS_MAX = 50
 
 
 
@@ -21,26 +22,31 @@ def pipeline(sampler, reference_data, output):
     output.put({"sky_map": sim_data, "cosmo_params": sampled["cosmo_params"], "betas": sampled["betas"], "proba": probas,
                 "accepted": accepted, "discrepency":discrepency})
 
+
 def main(NSIDE):
+    all_results = []
     reference_data = np.load("B3DCMB/reference_data.npy")
     output = mp.Queue()
     sampler = Sampler(NSIDE)
     time_start = time.clock()
     processes = [mp.Process(target=pipeline, args=(sampler, reference_data, output, )) for _ in range(N_sample)]
-    for p in processes:
-        p.start()
+    for i in range(np.floor(N_sample/N_PROCESS_MAX)):
+        for p in processes:
+            p.start()
 
-    results = [output.get() for p in processes]
-    for p in processes:
-        p.join()
+        results = [output.get() for p in processes]
+        for p in processes:
+            p.join()
+
+        all_results += results
 
     time_elapsed = time.clock() - time_start
 
     with open("B3DCMB/results", "wb") as f:
-        pickle.dump(results, f)
+        pickle.dump(all_results, f)
 
     print(time_elapsed)
-    print(len(results))
+    print(len(all_results))
 
 if __name__=='__main__':
     main(NSIDE)
