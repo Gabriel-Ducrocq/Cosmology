@@ -60,7 +60,7 @@ class Sampler:
 
     def sample_mixing_matrix(self, betas):
         mat_pixels = []
-        for i in numba.prange(self.Npix):
+        for i in range(self.Npix):
             m = self.mixing_matrix_evaluator(betas[i,:])
             mat_pixels.append(m)
 
@@ -80,7 +80,7 @@ class Sampler:
         entire_map = np.stack([map_CMB, map_Dust, map_Sync], axis = 1)
 
         dot_prod = []
-        for j in numba.prange(self.Npix):
+        for j in range(self.Npix):
             m = np.dot(mixing_matrix[j, :, :], entire_map[j, :, :])
             dot_prod.append(m)
 
