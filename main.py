@@ -20,7 +20,7 @@ def pipeline(tuple_input):
     probas = RBF_kernel(discrepency, sigma_rbf)
     accepted = np.random.binomial(1, probas)
     return {"sky_map": sim_data, "cosmo_params": sampled["cosmo_params"], "betas": sampled["betas"], "proba": probas,
-                "accepted": accepted, "discrepency":discrepency}
+            "accepted": accepted, "discrepency":discrepency}
 
 
 def main(NSIDE):
@@ -32,7 +32,7 @@ def main(NSIDE):
     time_elapsed = time.time() - time_start
     print(time_elapsed)
 
-    with open("B3DCMB/results", "wb") as f:
+    with open("B3DCMB/results_norm1", "wb") as f:
         pickle.dump(all_results, f)
 
     discrepencies = []
@@ -40,7 +40,7 @@ def main(NSIDE):
         discrepencies.append(dico["discrepency"])
 
     plt.hist(discrepencies, density = True)
-    plt.savefig('B3DCMB/discrepencies_histogram.png')
+    plt.savefig('B3DCMB/discrepencies_histogram_norm1.png')
 
     print(np.mean(discrepencies))
     print(np.median(discrepencies))

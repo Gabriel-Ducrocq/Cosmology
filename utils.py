@@ -68,7 +68,7 @@ def RBF_kernel(x, sigma = 1):
     return np.exp(-0.5*x/(sigma**2))
 
 def compute_discrepency(ref_data, simulated_data):
-    return np.sum((ref_data - simulated_data)**2)
+    return np.sum(np.abs(ref_data - simulated_data))
 
 
 
