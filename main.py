@@ -32,7 +32,7 @@ def main(NSIDE):
     time_elapsed = time.time() - time_start
     print(time_elapsed)
 
-    with open("B3DCMB/results_norm1", "wb") as f:
+    with open("B3DCMB/results_normInf", "wb") as f:
         pickle.dump(all_results, f)
 
     discrepencies = []
@@ -40,7 +40,7 @@ def main(NSIDE):
         discrepencies.append(dico["discrepency"])
 
     plt.hist(discrepencies, density = True)
-    plt.savefig('B3DCMB/discrepencies_histogram_norm1.png')
+    plt.savefig('B3DCMB/discrepencies_histogram_normInf.png')
 
     print(np.mean(discrepencies))
     print(np.median(discrepencies))
