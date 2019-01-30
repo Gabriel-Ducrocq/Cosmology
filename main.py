@@ -27,7 +27,6 @@ def main(NSIDE):
     reference_data = np.load("B3DCMB/reference_data.npy")
     sampler = Sampler(NSIDE)
     time_start = time.time()
-
     pool = mp.Pool()
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.time() - time_start
@@ -45,7 +44,6 @@ def main(NSIDE):
 
     print(np.mean(discrepencies))
     print(np.median(discrepencies))
-
 
 if __name__=='__main__':
     main(NSIDE)

@@ -2,7 +2,6 @@ import numpy as np
 import scipy
 import healpy as hp
 
-
 def read_template(path, NSIDE, fields = (0, 1, 2, 3, 4, 5) ):
     map_ = hp.read_map(path, field=fields)
     map_ = hp.ud_grade(map_, nside_out=NSIDE)
@@ -34,10 +33,10 @@ def get_mixing_matrix_params(NSIDE):
         'B3DCMB/COM_CompMap_dust-commander_0256_R2.00.fits', NSIDE, fields =(3,5,6,8))
     beta_sync = hp.read_map('B3DCMB/sync_beta.fits', field=(0))
     beta_sync = hp.ud_grade(beta_sync, nside_out=NSIDE)
-    sigma_beta_sync = np.random.normal(0, 0.1, beta_sync.shape)
-    params = {"dust":{"temp":{"mean": temp_dust.tolist(), "sigma":((sigma_temp_dust/2)**2).tolist()},
-                      "beta":{"mean":beta_dust.tolist(), "sigma": ((sigma_beta_dust/2)**2).tolist()}},
-            "sync":{"beta":{"mean":beta_sync.tolist(), "sigma": ((sigma_beta_sync/2)**2).tolist()}}}
+    sigma_beta_sync = np.load("B3DCMB/sigma_beta_sync.npy")
+    params = {"dust":{"temp":{"mean": temp_dust.tolist(), "sigma":(sigma_temp_dust**2).tolist()},
+                      "beta":{"mean":beta_dust.tolist(), "sigma": (sigma_beta_dust**2).tolist()}},
+            "sync":{"beta":{"mean":beta_sync.tolist(), "sigma": (sigma_beta_sync**2).tolist()}}}
 
     return params
 

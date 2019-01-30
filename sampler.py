@@ -28,7 +28,7 @@ class Sampler:
         self.matrix_mean, self.matrix_var = aggregate_mixing_params(get_mixing_matrix_params(self.NSIDE))
         print("Cosmo params")
         self.cosmo_means = np.array(COSMO_PARAMS_MEANS)
-        self.cosmo_var = (np.diag(COSMO_PARAMS_SIGMA)**2)
+        self.cosmo_var = np.diag(COSMO_PARAMS_SIGMA)**2
 
         self.instrument = pysm.Instrument(get_instrument('litebird', self.NSIDE))
         self.components = [CMB(), Dust(150.), Synchrotron(150.)]
