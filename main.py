@@ -55,10 +55,11 @@ def main(NSIDE):
     for res in results:
         discrepencies.append(res["discrepency"])
 
-    epsilons = np.linspace(2.4e7, 2.8e7, 1000)
+    print(len(discrepencies))
+    epsilons = np.linspace(2e7, 5e8, 10000)
     means = []
     for eps in epsilons:
-        means.append(np.mean(RBF_kernel(discrepencies, eps)))
+        means.append(np.mean(RBF_kernel(np.array(discrepencies), eps)))
 
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
