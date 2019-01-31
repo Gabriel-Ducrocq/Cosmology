@@ -124,6 +124,7 @@ def main(NSIDE):
         plt.title("Histogram parameter " + name + " for inf norm")
         plt.savefig("B3DCMB/histogram_norm_inf_"+name+".png")
         plt.axvline(reference_cosmo[i])
+        plt.close()
 
 
 
