@@ -78,9 +78,11 @@ def main(NSIDE):
         for set_cosmos in accepted_cosmo:
             e.append(set_cosmos[i])
 
+        print(np.mean(e))
+        print(np.median(e))
         prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
-        plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior")
         plt.hist(prior, density=True, alpha=0.5, label="Prior")
+        plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior", weights = probas)
         plt.legend(loc='upper right')
         plt.title('Histogram parameter: '+name)
         plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
