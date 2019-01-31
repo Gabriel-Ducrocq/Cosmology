@@ -68,20 +68,19 @@ def main(NSIDE):
     accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
     print("Only one kept")
     print(len(accepted_cosmo))
-
-    e = []
-    for set_cosmos in accepted_cosmo:
-        e.append(set_cosmos[0])
-
-    plt.hist(e, density = True)
-    plt.savefig("B3DCMB/histogram_n_s.png")
-    print(np.max(e))
-    print(np.min(e))
-    print(np.mean(e))
-    print(np.median(e))
     reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
-    print("True n_s value:")
-    print(reference_cosmo[0])
+
+    for i, name in COSMO_PARAMS_NAMES:
+        print(i)
+        e = []
+        for set_cosmos in accepted_cosmo:
+            e.append(set_cosmos[i])
+
+        plt.hist(e, density = True)
+        plt.title('Histogram parameter: '+name)
+        plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
+        plt.savefig("B3DCMB/histogram_" + name + ".png")
+
 
 
 
