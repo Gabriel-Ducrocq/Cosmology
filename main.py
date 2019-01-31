@@ -106,7 +106,7 @@ def main(NSIDE):
     cosmo_params = []
     betas = []
     for res in results:
-        sky_maps.append(res["sky_maps"])
+        sky_maps.append(res["sky_map"])
         cosmo_params.append(res["cosmo_params"])
         betas.append(res["betas"])
 
