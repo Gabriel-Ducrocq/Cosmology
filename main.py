@@ -115,7 +115,7 @@ def main(NSIDE):
     epsilon = np.linspace(2000, 3000, 1000)
     acceptance_ratio = []
     for eps in epsilon:
-        acceptance_ratio.append(np.mean(np.random.binomial(1, RBF_kernel(discrepencies_inf,eps))))
+        acceptance_ratio.append(np.mean(np.random.binomial(1, RBF_kernel(np.array(discrepencies_inf),eps))))
 
     plt.plot(epsilon, acceptance_ratio)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon_inf.png")
