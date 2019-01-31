@@ -75,11 +75,13 @@ def main(NSIDE):
 
     plt.hist(e, density = True)
     plt.savefig("B3DCMB/histogram_n_s.png")
-    print(e)
     print(np.max(e))
     print(np.min(e))
     print(np.mean(e))
     print(np.median(e))
+    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
+    print("True n_s value:")
+    print(reference_cosmo[0])
 
 
 
