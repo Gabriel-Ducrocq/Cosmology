@@ -66,13 +66,21 @@ def main(NSIDE):
     accepted = np.random.binomial(1, probas)
     print(np.mean(accepted))
     accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
+    print("Only one kept")
+    print(len(accepted_cosmo))
 
-    for i, name in enumerate(COSMO_PARAMS_NAMES):
-        e = []
-        for set_cosmos in accepted_cosmo:
-            e.append(set_cosmos[i])
-            plt.hist(e, density = True)
-            plt.savefig("B3DCMB/histogram_"+name+".png")
+    e = []
+    for set_cosmos in accepted_cosmo:
+        e.append(set_cosmos[0])
+
+    plt.hist(e, density = True)
+    plt.savefig("B3DCMB/histogram_n_s.png")
+    print(e)
+    print(np.max(e))
+    print(np.min(e))
+    print(np.mean(e))
+    print(np.median(e))
+
 
 
     '''
