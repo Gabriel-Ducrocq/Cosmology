@@ -70,7 +70,7 @@ def main(NSIDE):
     print(len(accepted_cosmo))
     reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
 
-    for i, name in COSMO_PARAMS_NAMES:
+    for i, name in enumerate(COSMO_PARAMS_NAMES):
         print(i)
         e = []
         for set_cosmos in accepted_cosmo:
