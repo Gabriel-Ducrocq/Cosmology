@@ -1,6 +1,6 @@
 import numpy as np
 from sampler import Sampler
-from utils import RBF_kernel, compute_discrepency
+from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf
 import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -15,11 +15,11 @@ COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_
 COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
 COSMO_PARAMS_SIGMA = [0.0038, 0.00014, 0.00091, 0.00029, 0.014, 0.0071]
 
-def pipeline(tuple_input):
+def pipeline(tuple_input, norm):
     sampler, reference_data = tuple_input
     sampled = sampler.sample_model()
     sim_data = sampled["sky_map"]
-    discrepency = compute_discrepency(reference_data, sim_data)
+    discrepency = compute_discrepency_L2(reference_data, sim_data)
     probas = RBF_kernel(discrepency, sigma_rbf)
     accepted = np.random.binomial(1, probas)
     return {"sky_map": sim_data, "cosmo_params": sampled["cosmo_params"], "betas": sampled["betas"], "proba": probas,
@@ -51,6 +51,7 @@ def main(NSIDE):
     print(np.median(discrepencies))
     '''
 
+    '''
     with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
 
@@ -89,13 +90,45 @@ def main(NSIDE):
         plt.savefig("B3DCMB/histogram_" + name + ".png")
         plt.close()
 
-
+    '''
 
 
     '''
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
     '''
+
+    reference_data = np.load("B3DCMB/reference_data.npy")
+    with open("B3DCMB/results", "rb") as f:
+        results = pickle.load(f)
+
+    sky_maps = []
+    cosmo_params = []
+    betas = []
+    for res in results:
+        sky_maps.append(res["sky_maps"])
+        cosmo_params.append(res["cosmo_params"])
+        betas.append(res["betas"])
+
+
+    time_start = time.time()
+    pool = mp.Pool(N_PROCESS_MAX)
+    discrepencies = pool.map(compute_discrepency_Inf, ((sky_map, reference_data, ) for sky_map in sky_maps))
+
+    plt.hist(discrepencies)
+    plt.savefig("B3DCMB/histogram_discrepencies_inf.png")
+
+    for i, d in discrepencies:
+        results[i].update({"discrepency_inf":d})
+
+
+    with open("B3DCMB/results", "wb") as f:
+        pickle.dump(results, f)
+
+
+
+
+
 
 
 if __name__=='__main__':
