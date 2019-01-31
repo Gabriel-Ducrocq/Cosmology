@@ -80,6 +80,7 @@ def main(NSIDE):
         plt.title('Histogram parameter: '+name)
         plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
         plt.savefig("B3DCMB/histogram_" + name + ".png")
+        plt.close()
 
 
 
