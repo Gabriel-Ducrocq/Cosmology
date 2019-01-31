@@ -61,7 +61,7 @@ def main(NSIDE):
         cosmo_sample.append(res["cosmo_params"])
         beta_sample.append(res["betas"])
 
-    probas = RBF_kernel(discrepencies, epsilon)
+    probas = RBF_kernel(np.array(discrepencies), epsilon)
     accepted = np.random.binomial((1, probas))
     print(np.mean(accepted))
 
