@@ -92,7 +92,6 @@ def main(NSIDE):
 
     '''
 
-
     '''
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
@@ -100,6 +99,8 @@ def main(NSIDE):
     reference_data = np.load("B3DCMB/reference_data.npy")
     with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
+
+    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
 
     sky_maps = []
     cosmo_params = []
@@ -112,13 +113,19 @@ def main(NSIDE):
         discrepencies_inf.append(res["discrepency_inf"])
 
 
-    epsilon = np.linspace(100, 3000, 10000)
-    acceptance_ratio = []
-    for eps in epsilon:
-        acceptance_ratio.append(np.mean(np.random.binomial(1, RBF_kernel(np.array(discrepencies_inf),eps))))
+    epsilon = 600
+    accepted = np.random.binomial(1, RBF_kernel(np.array(discrepencies_inf),epsilon))
+    l = zip(accepted, cosmo_params)
+    l = [e[1] for e in l if e[0] == 1]
 
-    plt.plot(epsilon, acceptance_ratio)
-    plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon_inf.png")
+    for i, name in enumerate(COSMO_PARAMS_NAMES):
+        values = [val[i] for val in l]
+        plt.hist(values)
+        plt.title("Histogram parameter " + name + " for inf norm")
+        plt.savefig("B3DCMB/histogram_norm_inf_"+name+".png")
+        plt.axvline(reference_cosmo[i])
+
+
 
 
 if __name__=='__main__':
