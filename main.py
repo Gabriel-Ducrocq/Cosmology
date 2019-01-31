@@ -24,6 +24,7 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
+    '''
     reference_data = np.load("B3DCMB/reference_data.npy")
     sampler = Sampler(NSIDE)
     time_start = time.time()
@@ -32,18 +33,37 @@ def main(NSIDE):
     time_elapsed = time.time() - time_start
     print(time_elapsed)
 
-    with open("B3DCMB/results_normInf", "wb") as f:
+    with open("B3DCMB/results", "wb") as f:
         pickle.dump(all_results, f)
 
     discrepencies = []
     for dico in all_results:
         discrepencies.append(dico["discrepency"])
 
+
     plt.hist(discrepencies, density = True)
-    plt.savefig('B3DCMB/discrepencies_histogram_normInf.png')
+    plt.savefig('B3DCMB/discrepencies_histogram.png')
 
     print(np.mean(discrepencies))
     print(np.median(discrepencies))
+    '''
+    with open("B3DCMB/results", "rb") as f:
+        results = pickle.load(f)
+
+
+    discrepencies = []
+    for res in results:
+        discrepencies.append(res["discrepency"])
+
+    epsilons = np.linspace(2.4e7, 2.8e7, 1000)
+    means = []
+    for eps in epsilons:
+        means.append(np.mean(RBF_kernel(discrepencies, eps)))
+
+    plt.plot(epsilons, means)
+    plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
+
+
 
 if __name__=='__main__':
     main(NSIDE)

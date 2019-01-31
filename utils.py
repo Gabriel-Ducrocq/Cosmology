@@ -65,10 +65,10 @@ def aggregate_mixing_params(params):
     return templates_mixing, scipy.linalg.block_diag(*[np.diag(s_) for s_ in sigma_templates_mixing])
 
 def RBF_kernel(x, sigma = 1):
-    return np.exp(-0.5*x/(sigma**2))
+    return np.exp(-0.5*x/sigma)
 
 def compute_discrepency(ref_data, simulated_data):
-    return np.max(ref_data - simulated_data)
+    return np.sum(np.abs(ref_data - simulated_data)**2)
 
 
 
