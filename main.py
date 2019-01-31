@@ -12,6 +12,8 @@ N_PROCESS_MAX = 45
 N_sample = 10000
 
 COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
+COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
+COSMO_PARAMS_SIGMA = [0.0038, 0.00014, 0.00091, 0.00029, 0.014, 0.0071]
 
 def pipeline(tuple_input):
     sampler, reference_data = tuple_input
@@ -76,7 +78,10 @@ def main(NSIDE):
         for set_cosmos in accepted_cosmo:
             e.append(set_cosmos[i])
 
-        plt.hist(e, density = True)
+        prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
+        plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior")
+        plt.hist(prior, density=True, alpha=0.5, label="Prior")
+        plt.legend(loc='upper right')
         plt.title('Histogram parameter: '+name)
         plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
         plt.savefig("B3DCMB/histogram_" + name + ".png")
