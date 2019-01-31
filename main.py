@@ -75,7 +75,7 @@ def main(NSIDE):
     for i, name in enumerate(COSMO_PARAMS_NAMES):
         print(i)
         e = []
-        for set_cosmos in accepted_cosmo:
+        for set_cosmos in cosmo_sample:
             e.append(set_cosmos[i])
 
         print(np.mean(e))
