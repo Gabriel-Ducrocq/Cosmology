@@ -118,7 +118,7 @@ def main(NSIDE):
     plt.hist(discrepencies)
     plt.savefig("B3DCMB/histogram_discrepencies_inf.png")
 
-    for i, d in discrepencies:
+    for i, d in enumerate(discrepencies):
         results[i].update({"discrepency_inf":d})
 
 
