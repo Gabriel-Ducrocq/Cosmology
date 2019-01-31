@@ -70,7 +70,8 @@ def RBF_kernel(x, sigma = 1):
 def compute_discrepency_L2(ref_data, simulated_data):
     return np.sum(np.abs(ref_data - simulated_data)**2)
 
-def compute_discrepency_Inf(ref_data, simulated_data):
+def compute_discrepency_Inf(tuple_input):
+    ref_data, simulated_data = tuple_input
     return np.max(ref_data - simulated_data)
 
 
