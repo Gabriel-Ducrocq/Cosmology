@@ -67,7 +67,8 @@ def aggregate_mixing_params(params):
 def RBF_kernel(x, sigma = 1):
     return np.exp(-0.5*x/sigma)
 
-def compute_discrepency_L2(ref_data, simulated_data):
+def compute_discrepency_L2(tuple_input):
+    ref_data, simulated_data = tuple_input
     return np.sum(np.abs(ref_data - simulated_data)**2)
 
 def compute_discrepency_Inf(tuple_input):

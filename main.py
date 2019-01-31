@@ -97,7 +97,6 @@ def main(NSIDE):
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
     '''
-
     reference_data = np.load("B3DCMB/reference_data.npy")
     with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
@@ -105,30 +104,21 @@ def main(NSIDE):
     sky_maps = []
     cosmo_params = []
     betas = []
+    discrepencies_inf = []
     for res in results:
         sky_maps.append(res["sky_map"])
         cosmo_params.append(res["cosmo_params"])
         betas.append(res["betas"])
+        discrepencies_inf.append(res["discrepency_inf"])
 
 
-    time_start = time.time()
-    pool = mp.Pool(N_PROCESS_MAX)
-    discrepencies = pool.map(compute_discrepency_Inf, ((sky_map, reference_data, ) for sky_map in sky_maps))
+    epsilon = np.linspace(2000, 3000, 1000)
+    acceptance_ratio = []
+    for eps in epsilon:
+        acceptance_ratio.append(np.mean(np.random.binomial(1,discrepencies_inf, eps)))
 
-    plt.hist(discrepencies)
-    plt.savefig("B3DCMB/histogram_discrepencies_inf.png")
-
-    for i, d in enumerate(discrepencies):
-        results[i].update({"discrepency_inf":d})
-
-
-    with open("B3DCMB/results", "wb") as f:
-        pickle.dump(results, f)
-
-
-
-
-
+    plt.plot(epsilon, acceptance_ratio)
+    plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon_inf.png")
 
 
 if __name__=='__main__':
