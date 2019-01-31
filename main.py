@@ -47,23 +47,28 @@ def main(NSIDE):
     print(np.mean(discrepencies))
     print(np.median(discrepencies))
     '''
+
     with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
 
+    epsilon = 5e7
 
     discrepencies = []
+    cosmo_sample = []
+    beta_sample = []
     for res in results:
         discrepencies.append(res["discrepency"])
+        cosmo_sample.append(res["cosmo_params"])
+        beta_sample.append(res["betas"])
 
-    print(len(discrepencies))
-    epsilons = np.linspace(1e7, 1e8, 10000)
-    means = []
-    for eps in epsilons:
-        means.append(np.mean(RBF_kernel(np.array(discrepencies), eps)))
+    probas = RBF_kernel(discrepencies, epsilon)
+    accepted = np.random.binomial((1, probas))
+    print(np.mean(accepted))
 
+    '''
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
-
+    '''
 
 
 if __name__=='__main__':
