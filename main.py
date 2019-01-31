@@ -56,7 +56,7 @@ def main(NSIDE):
         discrepencies.append(res["discrepency"])
 
     print(len(discrepencies))
-    epsilons = np.linspace(2e7, 5e8, 10000)
+    epsilons = np.linspace(1e7, 1e8, 10000)
     means = []
     for eps in epsilons:
         means.append(np.mean(RBF_kernel(np.array(discrepencies), eps)))
