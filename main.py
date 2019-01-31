@@ -11,6 +11,7 @@ sigma_rbf = 100000
 N_PROCESS_MAX = 45
 N_sample = 10000
 
+COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
 
 def pipeline(tuple_input):
     sampler, reference_data = tuple_input
@@ -51,7 +52,7 @@ def main(NSIDE):
     with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
 
-    epsilon = 5e7
+    epsilon = 6e6
 
     discrepencies = []
     cosmo_sample = []
@@ -64,6 +65,15 @@ def main(NSIDE):
     probas = RBF_kernel(np.array(discrepencies), epsilon)
     accepted = np.random.binomial(1, probas)
     print(np.mean(accepted))
+    accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
+
+    for i, name in enumerate(COSMO_PARAMS_NAMES):
+        e = []
+        for set_cosmos in accepted_cosmo:
+            e.append(set_cosmos[i])
+            plt.hist(e, density = True)
+            plt.savefig("B3DCMB/histogram_"+name+".png")
+
 
     '''
     plt.plot(epsilons, means)
