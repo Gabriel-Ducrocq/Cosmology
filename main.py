@@ -123,7 +123,7 @@ def main(NSIDE):
         plt.hist(values)
         plt.title("Histogram parameter " + name + " for inf norm")
         plt.savefig("B3DCMB/histogram_norm_inf_"+name+".png")
-        plt.axvline(reference_cosmo[i])
+        plt.axvline(reference_cosmo[i], linewidth=2, color='k')
         plt.close()
 
 
