@@ -112,7 +112,7 @@ def main(NSIDE):
         discrepencies_inf.append(res["discrepency_inf"])
 
 
-    epsilon = np.linspace(2000, 3000, 1000)
+    epsilon = np.linspace(1000, 3000, 1000)
     acceptance_ratio = []
     for eps in epsilon:
         acceptance_ratio.append(np.mean(np.random.binomial(1, RBF_kernel(np.array(discrepencies_inf),eps))))
