@@ -62,7 +62,7 @@ def main(NSIDE):
         beta_sample.append(res["betas"])
 
     probas = RBF_kernel(np.array(discrepencies), epsilon)
-    accepted = np.random.binomial((1, probas))
+    accepted = np.random.binomial(1, probas)
     print(np.mean(accepted))
 
     '''
