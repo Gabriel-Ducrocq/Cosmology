@@ -29,7 +29,7 @@ class Sampler:
         print("Cosmo params")
         self.cosmo_means = np.array(COSMO_PARAMS_MEANS)
         #Multiplié par 3 !!!!
-        self.cosmo_var = (np.diag(COSMO_PARAMS_SIGMA)*5)**2
+        self.cosmo_var = np.diag(COSMO_PARAMS_SIGMA)**2
 
         self.instrument = pysm.Instrument(get_instrument('litebird', self.NSIDE))
         self.components = [CMB(), Dust(150.), Synchrotron(150.)]
