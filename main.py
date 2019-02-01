@@ -19,26 +19,42 @@ def pipeline(tuple_input):
     sampler, reference_data = tuple_input
     sampled = sampler.sample_model()
     sim_data = sampled["sky_map"]
-    discrepency = compute_discrepency_L2(reference_data, sim_data)
-    probas = RBF_kernel(discrepency, sigma_rbf)
-    accepted = np.random.binomial(1, probas)
-    return {"sky_map": sim_data, "cosmo_params": sampled["cosmo_params"], "betas": sampled["betas"], "proba": probas,
-            "accepted": accepted, "discrepency":discrepency}
+    discrepency_L2 = compute_discrepency_L2((reference_data, sim_data))
+    discrepency_inf = compute_discrepency_Inf((reference_data, sim_data))
+    return {"sky_map": sim_data, "cosmo_params": sampled["cosmo_params"], "betas": sampled["betas"],
+            "discrepency_L2":discrepency_L2, "discrepency_Inf": discrepency_inf}
 
 
 def main(NSIDE):
-    '''
-    reference_data = np.load("B3DCMB/reference_data.npy")
+    reference_data = np.load("B3DCMB/reference_data_extrem.npy")
     sampler = Sampler(NSIDE)
+
     time_start = time.time()
     pool = mp.Pool(N_PROCESS_MAX)
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.time() - time_start
     print(time_elapsed)
 
-    with open("B3DCMB/results", "wb") as f:
+    with open("B3DCMB/results_extrem", "wb") as f:
         pickle.dump(all_results, f)
 
+    discr_L2 = []
+    discr_Inf = []
+    for res in all_results:
+        discr_L2.append(res["discrepency_L2"])
+        discr_Inf.append(res["discrepency_Inf"])
+
+    plt.hist(discr_L2)
+    plt.title("Discrepencies for L2 distance")
+    plt.savefig("B3DCMB/hist_discr_L2_extrem.png")
+    plt.close()
+
+    plt.hist(discr_Inf)
+    plt.title("Discrepencies for norm sup distance")
+    plt.savefig("B3DCMB/hist_discr_normsup_extrem.png")
+    plt.close()
+
+    '''
     discrepencies = []
     for dico in all_results:
         discrepencies.append(dico["discrepency"])
@@ -96,41 +112,10 @@ def main(NSIDE):
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
     '''
-    reference_data = np.load("B3DCMB/reference_data.npy")
-    with open("B3DCMB/results", "rb") as f:
-        results = pickle.load(f)
-
-    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
-
-    sky_maps = []
-    cosmo_params = []
-    betas = []
-    discrepencies_inf = []
-    for res in results:
-        sky_maps.append(res["sky_map"])
-        cosmo_params.append(res["cosmo_params"])
-        betas.append(res["betas"])
-        discrepencies_inf.append(res["discrepency_inf"])
-
-
-    epsilon = 600
-    accepted = np.random.binomial(1, RBF_kernel(np.array(discrepencies_inf),epsilon))
-    l = zip(accepted, cosmo_params)
-    l = [e[1] for e in l if e[0] == 1]
-
-    for i, name in enumerate(COSMO_PARAMS_NAMES):
-        values = [val[i] for val in l]
-        prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
-        plt.hist(prior, density=True, alpha=0.5, label="Prior")
-        plt.hist(values, density = True, alpha = 0.5, label = "ABC posterior")
-        plt.title("Histogram parameter " + name + " for inf norm")
-        plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
-        plt.legend(loc='upper right')
-        plt.savefig("B3DCMB/histogram_norm_inf_"+name+".png")
-        plt.close()
 
 
 
 
 if __name__=='__main__':
     main(NSIDE)
+

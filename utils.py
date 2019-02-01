@@ -34,9 +34,10 @@ def get_mixing_matrix_params(NSIDE):
     beta_sync = hp.read_map('B3DCMB/sync_beta.fits', field=(0))
     beta_sync = hp.ud_grade(beta_sync, nside_out=NSIDE)
     sigma_beta_sync = np.load("B3DCMB/sigma_beta_sync.npy")
-    params = {"dust":{"temp":{"mean": temp_dust.tolist(), "sigma":(sigma_temp_dust**2).tolist()},
-                      "beta":{"mean":beta_dust.tolist(), "sigma": (sigma_beta_dust**2).tolist()}},
-            "sync":{"beta":{"mean":beta_sync.tolist(), "sigma": (sigma_beta_sync**2).tolist()}}}
+    #Multiplié par 3 !!!!!!
+    params = {"dust":{"temp":{"mean": temp_dust.tolist(), "sigma":((sigma_temp_dust*5)**2).tolist()},
+                      "beta":{"mean":beta_dust.tolist(), "sigma": ((sigma_beta_dust*5)**2).tolist()}},
+            "sync":{"beta":{"mean":beta_sync.tolist(), "sigma": ((sigma_beta_sync*5)**2).tolist()}}}
 
     return params
 
