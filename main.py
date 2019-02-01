@@ -120,9 +120,12 @@ def main(NSIDE):
 
     for i, name in enumerate(COSMO_PARAMS_NAMES):
         values = [val[i] for val in l]
-        plt.hist(values)
+        prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
+        plt.hist(prior, density=True, alpha=0.5, label="Prior")
+        plt.hist(values, density = True, alpha = 0.5, label = "ABC posterior")
         plt.title("Histogram parameter " + name + " for inf norm")
         plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
+        plt.legend(loc='upper right')
         plt.savefig("B3DCMB/histogram_norm_inf_"+name+".png")
         plt.close()
 
