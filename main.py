@@ -1,6 +1,6 @@
 import numpy as np
 from sampler import Sampler
-from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf
+from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates
 import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -26,6 +26,7 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
+    '''
     reference_data = np.load("B3DCMB/reference_data_extrem.npy")
     sampler = Sampler(NSIDE)
 
@@ -54,6 +55,7 @@ def main(NSIDE):
     plt.savefig("B3DCMB/hist_discr_normsup_extrem.png")
     plt.close()
 
+    '''
     '''
     discrepencies = []
     for dico in all_results:
@@ -113,7 +115,20 @@ def main(NSIDE):
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
     '''
 
+    with open("B3DCMB/results_extrem", "rb") as f:
+        results = pickle.load(f)
 
+    disc_l2 = []
+    disc_inf = []
+    for res in results:
+        disc_l2.append(res["discrepency_L2"])
+        disc_inf.append(res["discrepency_inf"])
+
+    epsilon_l2 = np.linspace(3e25, 6e25, 10000)
+    epsilon_inf = np.linspace(5.794e12 + 6900, 5.794e12 + 7050, 10000)
+
+    compute_acceptance_rates(disc_l2, epsilon_l2, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_l2_extrem.png")
+    compute_acceptance_rates(disc_inf, epsilon_inf, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_inf_extrem.png")
 
 
 if __name__=='__main__':

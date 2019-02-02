@@ -1,6 +1,7 @@
 import numpy as np
 import scipy
 import healpy as hp
+import matplotlib.pyplot as plt
 
 def read_template(path, NSIDE, fields = (0, 1, 2, 3, 4, 5) ):
     map_ = hp.read_map(path, field=fields)
@@ -76,4 +77,13 @@ def compute_discrepency_Inf(tuple_input):
     return np.max(ref_data - simulated_data)
 
 
+def compute_acceptance_rates(discrepencies, epsilons, title, path):
+    ratios = []
+    for eps in epsilons:
+        ratios.append(np.mean(np.random.bin(1, RBF_kernel(np.array(discrepencies),eps))))
+
+    plt.plot(epsilons, ratios)
+    plt.title(title)
+    plt.savefig(path)
+    plt.close()
 
