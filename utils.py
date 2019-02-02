@@ -80,7 +80,7 @@ def compute_discrepency_Inf(tuple_input):
 def compute_acceptance_rates(discrepencies, epsilons, title, path):
     ratios = []
     for eps in epsilons:
-        ratios.append(np.mean(np.random.bin(1, RBF_kernel(np.array(discrepencies),eps))))
+        ratios.append(np.mean(np.random.binomial(1, RBF_kernel(np.array(discrepencies),eps))))
 
     plt.plot(epsilons, ratios)
     plt.title(title)
