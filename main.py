@@ -1,6 +1,6 @@
 import numpy as np
 from sampler import Sampler
-from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates
+from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates, histogram_posterior
 import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -69,66 +69,31 @@ def main(NSIDE):
     print(np.median(discrepencies))
     '''
 
-    '''
-    with open("B3DCMB/results", "rb") as f:
+    with open("B3DCMB/results_extrem", "rb") as f:
         results = pickle.load(f)
 
-    epsilon = 6e6
+    reference_cosmo = np.load("B3DCMB/reference_cosmo_extrem.npy")
 
-    discrepencies = []
+
+    discrepencies_l2 = []
+    discrepencies_inf = []
     cosmo_sample = []
-    beta_sample = []
     for res in results:
-        discrepencies.append(res["discrepency"])
+        discrepencies_l2.append(res["discrepency_L2"])
+        discrepencies_inf.append(res["discrepency_Inf"])
         cosmo_sample.append(res["cosmo_params"])
-        beta_sample.append(res["betas"])
 
-    probas = RBF_kernel(np.array(discrepencies), epsilon)
-    accepted = np.random.binomial(1, probas)
-    print(np.mean(accepted))
-    accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
-    print("Only one kept")
-    print(len(accepted_cosmo))
-    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
+    epsilon_l2 = 1e25
+    epsilon_inf = 1.3e12
 
-    for i, name in enumerate(COSMO_PARAMS_NAMES):
-        print(i)
-        e = []
-        for set_cosmos in cosmo_sample:
-            e.append(set_cosmos[i])
+    histogram_posterior(epsilon_l2, discrepencies_l2, cosmo_sample, reference_cosmo, "l2")
+    histogram_posterior(epsilon_inf, discrepencies_inf, cosmo_sample, reference_cosmo, "Inf")
 
-        print(np.mean(e))
-        print(np.median(e))
-        prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
-        plt.hist(prior, density=True, alpha=0.5, label="Prior")
-        plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior", weights = probas)
-        plt.legend(loc='upper right')
-        plt.title('Histogram parameter: '+name)
-        plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
-        plt.savefig("B3DCMB/histogram_" + name + ".png")
-        plt.close()
-
-    '''
 
     '''
     plt.plot(epsilons, means)
     plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
     '''
-
-    with open("B3DCMB/results_extrem", "rb") as f:
-        results = pickle.load(f)
-
-    disc_l2 = []
-    disc_inf = []
-    for res in results:
-        disc_l2.append(res["discrepency_L2"])
-        disc_inf.append(res["discrepency_Inf"])
-
-    epsilon_l2 = np.linspace(1e25, 6e25, 10000)
-    epsilon_inf = np.linspace(5.794e11 + 6900, 5.794e12 + 7050, 10000)
-
-    compute_acceptance_rates(disc_l2, epsilon_l2, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_l2_extrem.png")
-    compute_acceptance_rates(disc_inf, epsilon_inf, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_inf_extrem.png")
 
 
 if __name__=='__main__':

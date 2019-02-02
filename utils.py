@@ -3,6 +3,10 @@ import scipy
 import healpy as hp
 import matplotlib.pyplot as plt
 
+COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
+COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
+COSMO_PARAMS_SIGMA = [0.0038, 0.00014, 0.00091, 0.00029, 0.014, 0.0071]
+
 def read_template(path, NSIDE, fields = (0, 1, 2, 3, 4, 5) ):
     map_ = hp.read_map(path, field=fields)
     map_ = hp.ud_grade(map_, nside_out=NSIDE)
@@ -87,3 +91,26 @@ def compute_acceptance_rates(discrepencies, epsilons, title, path):
     plt.savefig(path)
     plt.close()
 
+
+def histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, distance):
+    probas = RBF_kernel(np.array(discrepencies), epsilon)
+    accepted = np.random.binomial(1, probas)
+    print("Acceptance ratio:" + str(np.mean(accepted)))
+    accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
+
+    for i, name in enumerate(COSMO_PARAMS_NAMES):
+        print(i)
+        e = []
+        for set_cosmos in accepted_cosmo:
+            e.append(set_cosmos[i])
+
+        print(np.mean(e))
+        print(np.median(e))
+        prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
+        plt.hist(prior, density=True, alpha=0.5, label="Prior")
+        plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior")
+        plt.legend(loc='upper right')
+        plt.title('Histogram parameter: '+name)
+        plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
+        plt.savefig("B3DCMB/histogram_" + name + "_" + distance + ".png")
+        plt.close()
