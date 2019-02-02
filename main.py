@@ -124,8 +124,8 @@ def main(NSIDE):
         disc_l2.append(res["discrepency_L2"])
         disc_inf.append(res["discrepency_Inf"])
 
-    epsilon_l2 = np.linspace(3e25, 6e25, 10000)
-    epsilon_inf = np.linspace(5.794e12 + 6900, 5.794e12 + 7050, 10000)
+    epsilon_l2 = np.linspace(1e25, 6e25, 10000)
+    epsilon_inf = np.linspace(5.794e11 + 6900, 5.794e12 + 7050, 10000)
 
     compute_acceptance_rates(disc_l2, epsilon_l2, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_l2_extrem.png")
     compute_acceptance_rates(disc_inf, epsilon_inf, "Acceptance rate vs epsilon", "B3DCMB/acc_rate_inf_extrem.png")
