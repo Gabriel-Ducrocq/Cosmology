@@ -77,11 +77,9 @@ def main(NSIDE):
 
 
     discrepencies_l2 = []
-    discrepencies_inf = []
     cosmo_sample = []
     for res in results:
-        discrepencies_l2.append(res["discrepency_L2"])
-        discrepencies_inf.append(res["discrepency_Inf"])
+        discrepencies_l2.append(res["discrepency"])
         cosmo_sample.append(res["cosmo_params"])
 
     graph_dist_vs_theta(discrepencies_l2, cosmo_sample, reference_cosmo)
