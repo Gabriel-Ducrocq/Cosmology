@@ -74,19 +74,14 @@ def main(NSIDE):
         results = pickle.load(f)
 
     reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
-    reference_betas = np.load("B3DCMB/reference_beta.npy")
 
-
-    discrepencies_l2 = []
-    cosmo_sample = []
-    betas = []
+    discrepencies = []
     for res in results:
-        discrepencies_l2.append(res["discrepency"])
-        cosmo_sample.append(res["cosmo_params"])
-        betas.append(res["betas"])
+        discrepencies.append(res["discrepency"])
 
-    graph_dist_vs_dist_theta(discrepencies_l2, cosmo_sample, reference_cosmo, betas, reference_betas)
-
+    epsilon = 1e5
+    accepted = np.random.binomial(1, RBF_kernel(discrepencies, epsilon))
+    print(np.mean(accepted))
 
     '''
     plt.plot(epsilons, means)
