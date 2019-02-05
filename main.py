@@ -76,12 +76,13 @@ def main(NSIDE):
     reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
 
     discrepencies = []
+    cosmo_sample = []
     for res in results:
         discrepencies.append(res["discrepency"])
+        cosmo_sample.append(res["cosmo_params"])
 
-    epsilon = 1e5
-    accepted = np.random.binomial(1, RBF_kernel(np.array(discrepencies), epsilon))
-    print(np.mean(accepted))
+    epsilon = 3e6
+    histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, "L2_with_fewer_samples")
 
     '''
     plt.plot(epsilons, means)
