@@ -107,6 +107,7 @@ def histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, d
 
         print(np.mean(e))
         print(np.median(e))
+        print("Length of e:" + str(len(e)))
         prior = np.random.normal(COSMO_PARAMS_MEANS[i], COSMO_PARAMS_SIGMA[i], 10000)
         plt.hist(prior, density=True, alpha=0.5, label="Prior")
         plt.hist(e, density = True, alpha = 0.5, label = "ABC posterior")
