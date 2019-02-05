@@ -80,7 +80,7 @@ def main(NSIDE):
         discrepencies.append(res["discrepency"])
 
     epsilon = 1e5
-    accepted = np.random.binomial(1, RBF_kernel(discrepencies, epsilon))
+    accepted = np.random.binomial(1, RBF_kernel(np.array(discrepencies), epsilon))
     print(np.mean(accepted))
 
     '''
