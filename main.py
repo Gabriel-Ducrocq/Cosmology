@@ -1,7 +1,7 @@
 import numpy as np
 from sampler import Sampler
 from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates, \
-    histogram_posterior, graph_dist_vs_theta
+    histogram_posterior, graph_dist_vs_theta, graph_dist_vs_dist_theta
 import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -82,7 +82,7 @@ def main(NSIDE):
         discrepencies_l2.append(res["discrepency"])
         cosmo_sample.append(res["cosmo_params"])
 
-    graph_dist_vs_theta(discrepencies_l2, cosmo_sample, reference_cosmo)
+    graph_dist_vs_dist_theta(discrepencies_l2, cosmo_sample, reference_cosmo)
 
 
     '''

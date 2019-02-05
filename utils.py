@@ -130,4 +130,15 @@ def graph_dist_vs_theta(discrepencies, cosmo_params, reference_cosmo):
 
 
 
+def graph_dist_vs_dist_theta(discrepencies, cosmo_params, reference_cosmo):
+    params_distances = []
+    for j in range(len(discrepencies)):
+        params_distances.append(np.sqrt(np.sum((reference_cosmo - cosmo_params[j])**2)))
+
+    plt.plot(params_distances, discrepencies, "o")
+    plt.title("Discrepency vs params distances")
+    plt.savefig("B3DCMB/figures/discrepency_vs_params_distances.png")
+    plt.close()
+
+
 
