@@ -135,17 +135,22 @@ def graph_dist_vs_dist_theta(discrepencies, cosmo_params, reference_cosmo, betas
     if not betas:
         for j in range(len(discrepencies)):
             params_distances.append(np.sqrt(np.sum((reference_cosmo - cosmo_params[j])**2)))
+
+        plt.plot(params_distances, discrepencies, "o")
+        plt.title("Discrepency vs params distances")
+        plt.savefig("B3DCMB/figures/discrepency_vs_params_distances.png")
+        plt.close()
+
     else:
         for j in range(len(discrepencies)):
             d1 = np.sum((reference_cosmo - cosmo_params[j])**2)
             d2 = np.sum((reference_betas - betas[j])**2)
             params_distances.append(np.sqrt(d1+d2))
 
-
-    plt.plot(params_distances, discrepencies, "o")
-    plt.title("Discrepency vs params distances")
-    plt.savefig("B3DCMB/figures/discrepency_vs_params_distances.png")
-    plt.close()
+        plt.plot(params_distances, discrepencies, "o")
+        plt.title("Discrepency vs all params distances")
+        plt.savefig("B3DCMB/figures/discrepency_vs_all_params_distances.png")
+        plt.close()
 
 
 

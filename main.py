@@ -85,7 +85,7 @@ def main(NSIDE):
         cosmo_sample.append(res["cosmo_params"])
         betas.append(res["betas"])
 
-    graph_dist_vs_dist_theta(discrepencies_l2, cosmo_sample, reference_cosmo, betas, reference_betas)
+    graph_dist_vs_dist_theta(discrepencies_l2, cosmo_sample, reference_cosmo)
 
 
     '''
