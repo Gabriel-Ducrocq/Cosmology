@@ -96,8 +96,8 @@ def histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, d
     probas = RBF_kernel(np.array(discrepencies), epsilon)
     accepted = np.random.binomial(1, probas)
     print("Acceptance ratio:" + str(np.mean(accepted)))
-    print("Number of accepted samples: " + str(len(accepted)))
     accepted_cosmo = [l[1] for l in list(zip(accepted, cosmo_sample)) if l[0] == 1]
+    print("Number of accepted samples: " + str(len(accepted_cosmo)))
 
     for i, name in enumerate(COSMO_PARAMS_NAMES):
         print(i)
