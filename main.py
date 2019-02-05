@@ -78,7 +78,7 @@ def main(NSIDE):
     discrepencies = []
     cosmo_sample = []
     for res in results:
-        discrepencies.append(res["discrepency"])
+        discrepencies.append(res["discrepency_L2"])
         cosmo_sample.append(res["cosmo_params"])
 
     epsilon = 5e24
