@@ -1,6 +1,7 @@
 import numpy as np
 from sampler import Sampler
-from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates, histogram_posterior
+from utils import RBF_kernel, compute_discrepency_L2, compute_discrepency_Inf, compute_acceptance_rates, \
+    histogram_posterior, graph_dist_vs_theta
 import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
@@ -69,10 +70,10 @@ def main(NSIDE):
     print(np.median(discrepencies))
     '''
 
-    with open("B3DCMB/results_extrem", "rb") as f:
+    with open("B3DCMB/results", "rb") as f:
         results = pickle.load(f)
 
-    reference_cosmo = np.load("B3DCMB/reference_cosmo_extrem.npy")
+    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
 
 
     discrepencies_l2 = []
@@ -83,11 +84,7 @@ def main(NSIDE):
         discrepencies_inf.append(res["discrepency_Inf"])
         cosmo_sample.append(res["cosmo_params"])
 
-    epsilon_l2 = 1e25
-    epsilon_inf = 1.3e12
-
-    histogram_posterior(epsilon_l2, discrepencies_l2, cosmo_sample, reference_cosmo, "l2")
-    histogram_posterior(epsilon_inf, discrepencies_inf, cosmo_sample, reference_cosmo, "Inf")
+    graph_dist_vs_theta(discrepencies_l2, cosmo_sample, reference_cosmo)
 
 
     '''

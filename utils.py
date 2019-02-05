@@ -114,3 +114,20 @@ def histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, d
         plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
         plt.savefig("B3DCMB/histogram_" + name + "_" + distance + ".png")
         plt.close()
+
+
+def graph_dist_vs_theta(discrepencies, cosmo_params, reference_cosmo):
+    for i, name in enumerate(COSMO_PARAMS_NAMES):
+        cosmo = []
+        for j in range(len(discrepencies)):
+            cosmo.append(cosmo_params[j][i])
+
+        plt.plot(cosmo, discrepencies, "o")
+        plt.axvline(reference_cosmo[i], color='k', linestyle='dashed', linewidth=1)
+        plt.title("Discrepency vs " + name)
+        plt.savefig("B3DCMB/figures/discrepency_vs_" + name + ".png")
+        plt.close()
+
+
+
+
