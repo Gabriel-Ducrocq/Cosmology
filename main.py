@@ -70,7 +70,7 @@ def main(NSIDE):
     print(np.median(discrepencies))
     '''
 
-    with open("B3DCMB/results", "rb") as f:
+    with open("B3DCMB/results_extrem", "rb") as f:
         results = pickle.load(f)
 
     reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
@@ -81,8 +81,8 @@ def main(NSIDE):
         discrepencies.append(res["discrepency"])
         cosmo_sample.append(res["cosmo_params"])
 
-    epsilon = 3e6
-    histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, "L2_with_fewer_samples")
+    epsilon = 5e24
+    histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, "L2_extrem_with_fewer_samples")
 
     '''
     plt.plot(epsilons, means)
