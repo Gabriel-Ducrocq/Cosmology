@@ -73,7 +73,7 @@ def main(NSIDE):
     with open("B3DCMB/results_extrem", "rb") as f:
         results = pickle.load(f)
 
-    reference_cosmo = np.load("B3DCMB/reference_cosmo.npy")
+    reference_cosmo = np.load("B3DCMB/reference_cosmo_extrem.npy")
 
     discrepencies = []
     cosmo_sample = []
