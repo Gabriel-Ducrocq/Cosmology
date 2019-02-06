@@ -6,6 +6,7 @@ from classy import Class
 import pysm
 from utils import get_pixels_params, get_mixing_matrix_params, aggregate_pixels_params, aggregate_mixing_params
 from fgbuster.component_model import CMB, Dust, Synchrotron
+import matplotlib.pyplot as plt
 
 COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
 COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
@@ -30,6 +31,12 @@ class Sampler:
         self.cosmo_means = np.array(COSMO_PARAMS_MEANS)
         self.cosmo_var = (np.diag(COSMO_PARAMS_SIGMA)/2)**2
 
+        plt.hist(self.templates_map)
+        plt.savefig("mean_values.png")
+        plt.close()
+        plt.hist(self.templates_var)
+        plt.savefig("std_values.png")
+        plt.close()
         self.instrument = pysm.Instrument(get_instrument('litebird', self.NSIDE))
         self.components = [CMB(), Dust(150.), Synchrotron(150.)]
         self.mixing_matrix = MixingMatrix(*self.components)
