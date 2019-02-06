@@ -55,7 +55,6 @@ def main(NSIDE):
     plt.savefig("data/graphics/hist_discr_Inf_simplified.png")
     plt.close()
 
-    """
     '''
     discrepencies = []
     for dico in all_results:
