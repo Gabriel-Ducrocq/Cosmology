@@ -7,10 +7,10 @@ import multiprocessing as mp
 import matplotlib.pyplot as plt
 import time
 
-NSIDE = 4
+NSIDE = 2
 sigma_rbf = 100000
 N_PROCESS_MAX = 45
-N_sample = 10000
+N_sample = 1000
 
 COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
 COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
@@ -27,8 +27,7 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
-    '''
-    reference_data = np.load("B3DCMB/reference_data_extrem.npy")
+    reference_data = np.load("data/reference_values/reference_data_simplified.npy")
     sampler = Sampler(NSIDE)
 
     time_start = time.time()
@@ -37,7 +36,7 @@ def main(NSIDE):
     time_elapsed = time.time() - time_start
     print(time_elapsed)
 
-    with open("B3DCMB/results_extrem", "wb") as f:
+    with open("data/simulations/results_simplified", "wb") as f:
         pickle.dump(all_results, f)
 
     discr_L2 = []
@@ -47,16 +46,16 @@ def main(NSIDE):
         discr_Inf.append(res["discrepency_Inf"])
 
     plt.hist(discr_L2)
-    plt.title("Discrepencies for L2 distance")
-    plt.savefig("B3DCMB/hist_discr_L2_extrem.png")
+    plt.title("Discrepencies for L2 distance simplified model")
+    plt.savefig("data/graphics/hist_discr_L2_simplified.png")
     plt.close()
 
     plt.hist(discr_Inf)
-    plt.title("Discrepencies for norm sup distance")
-    plt.savefig("B3DCMB/hist_discr_normsup_extrem.png")
+    plt.title("Discrepencies for Inf distance simplified model")
+    plt.savefig("data/graphics/hist_discr_Inf_simplified.png")
     plt.close()
 
-    '''
+    """
     '''
     discrepencies = []
     for dico in all_results:
@@ -70,24 +69,6 @@ def main(NSIDE):
     print(np.median(discrepencies))
     '''
 
-    with open("B3DCMB/results_extrem", "rb") as f:
-        results = pickle.load(f)
-
-    reference_cosmo = np.load("B3DCMB/reference_cosmo_extrem.npy")
-
-    discrepencies = []
-    cosmo_sample = []
-    for res in results:
-        discrepencies.append(res["discrepency_L2"])
-        cosmo_sample.append(res["cosmo_params"])
-
-    epsilon = 5e24
-    histogram_posterior(epsilon, discrepencies, cosmo_sample, reference_cosmo, "L2_extrem_with_fewer_samples")
-
-    '''
-    plt.plot(epsilons, means)
-    plt.savefig("B3DCMB/acceptance_ratio_vs_epsilon.png")
-    '''
 
 
 if __name__=='__main__':

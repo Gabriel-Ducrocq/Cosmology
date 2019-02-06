@@ -28,8 +28,7 @@ class Sampler:
         self.matrix_mean, self.matrix_var = aggregate_mixing_params(get_mixing_matrix_params(self.NSIDE))
         print("Cosmo params")
         self.cosmo_means = np.array(COSMO_PARAMS_MEANS)
-        #Multiplié par 3 !!!!
-        self.cosmo_var = np.diag(COSMO_PARAMS_SIGMA)**2
+        self.cosmo_var = (np.diag(COSMO_PARAMS_SIGMA)/2)**2
 
         self.instrument = pysm.Instrument(get_instrument('litebird', self.NSIDE))
         self.components = [CMB(), Dust(150.), Synchrotron(150.)]
@@ -57,7 +56,8 @@ class Sampler:
 
     def sample_model_parameters(self):
         sampled_cosmo = self.sample_normal(self.cosmo_means, self.cosmo_var)
-        sampled_beta = self.sample_normal(self.matrix_mean, self.matrix_var).reshape((self.Npix, -1), order = "F")
+        #sampled_beta = self.sample_normal(self.matrix_mean, self.matrix_var).reshape((self.Npix, -1), order = "F")
+        sampled_beta = self.matrix_mean.reshape((self.Npix, -1), order = "F")
         return sampled_cosmo, sampled_beta
 
     def sample_CMB_QU(self, cosmo_params):
@@ -104,6 +104,8 @@ class Sampler:
         sky_map = np.stack(dot_prod, axis = 0)
 
         return {"sky_map": sky_map, "cosmo_params": cosmo_params, "betas": sampled_beta}
+
+
 
 
 
