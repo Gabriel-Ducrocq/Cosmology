@@ -55,8 +55,7 @@ def main(NSIDE):
 
     epsilon_inf = 15
     epsilon_l2 = 40000
-    histogram_posterior(epsilon_inf, discr_Inf, cosmo_sample, reference_cosmo, "inf_simplified")
-    histogram_posterior(epsilon_l2, discr_L2, cosmo_sample, reference_cosmo, "inf_simplified")
+    graph_dist_vs_dist_theta(discr_L2, cosmo_sample, reference_cosmo)
     '''
     plt.hist(discr_L2)
     plt.title("Discrepencies for L2 distance simplified model")
