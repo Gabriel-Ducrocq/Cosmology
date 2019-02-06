@@ -49,8 +49,8 @@ def main(NSIDE):
         discr_L2.append(res["discrepency_L2"])
         discr_Inf.append(res["discrepency_Inf"])
 
-    epsilons_l2 = np.linspace(50000, 210000, 10000)
-    epsilons_inf = np.linspace(10, 200, 10000)
+    epsilons_l2 = np.linspace(30000, 800000, 10000)
+    epsilons_inf = np.linspace(10, 30, 10000)
     compute_acceptance_rates(discr_L2, epsilons_l2, "Acceptance rate simplified l2", "data/graphics/acc_rate_L2_simplified.png")
     compute_acceptance_rates(discr_Inf, epsilons_inf, "Acceptance rate simplified Inf", "data/graphics/acc_rate_inf_simplified.png")
 
