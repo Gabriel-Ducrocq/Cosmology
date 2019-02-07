@@ -51,6 +51,8 @@ def main(NSIDE):
         discr_Inf.append(res["discrepency_Inf"])
         cosmo_sample.append(res["cosmo_params"])
 
+    reference_cosmo = np.load("data/reference_values/reference_cosmo_simplified.npy")
+
     '''
     plt.hist(discr_L2)
     plt.title("Discrepencies for L2 distance simplified model")
@@ -63,11 +65,14 @@ def main(NSIDE):
     plt.close()
     '''
 
-    epsilons_l2 = np.linspace(1000, 5000, 10000)
-    epsilons_inf = np.linspace(5, 25, 10000)
+    epsilon_l2 = 1750
+    epsilon_inf = 5
 
-    compute_acceptance_rates(discr_L2, epsilons_l2, "Acceptance rate simplified", "data/graphics/acc_rate_L2_simplified.png")
-    compute_acceptance_rates(discr_Inf, epsilons_inf, "Acceptance rate simplified","data/graphics/acc_rate_inf_simplified.png")
+    histogram_posterior(epsilon_l2, discr_L2, cosmo_sample, reference_cosmo, "l2_simplified")
+    histogram_posterior(epsilon_inf, discr_Inf, cosmo_sample, reference_cosmo, "inf_simplified")
+
+    graph_dist_vs_theta(discr_L2, cosmo_sample, reference_cosmo)
+    graph_dist_vs_dist_theta(discr_L2, cosmo_sample, reference_cosmo)
 
     '''
     discrepencies = []
