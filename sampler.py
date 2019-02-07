@@ -62,16 +62,17 @@ class Sampler:
         return np.random.multivariate_normal(mu, sigma, s)
 
     def sample_model_parameters(self):
+        print("Sampling parameters")
         sampled_cosmo = self.sample_normal(self.cosmo_means, self.cosmo_var)
         #sampled_beta = self.sample_normal(self.matrix_mean, self.matrix_var).reshape((self.Npix, -1), order = "F")
         sampled_beta = self.matrix_mean.reshape((self.Npix, -1), order = "F")
         return sampled_cosmo, sampled_beta
 
     def sample_CMB_QU(self, cosmo_params):
-        params = [('output', OUTPUT_CLASS),
-                  ('l_max_scalars', L_MAX_SCALARS),
-                  ('lensing', LENSING)]
-        params += cosmo_params
+        params = {'output': OUTPUT_CLASS,
+                  'l_max_scalars': L_MAX_SCALARS,
+                  'lensing': LENSING}
+        params.update(cosmo_params)
         self.cosmo.set(params)
         self.cosmo.compute()
         cls = self.cosmo.lensed_cl(L_MAX_SCALARS)
@@ -95,9 +96,10 @@ class Sampler:
         cosmo_params, sampled_beta = self.sample_model_parameters()
         maps = self.sample_normal(self.templates_map, self.templates_var)
 
-        cosmo_dict = [(l[0],l[1]) for l in list(zip(COSMO_PARAMS_NAMES, cosmo_params.tolist()))]
+        cosmo_dict = {l[0]: l[1] for l in zip(COSMO_PARAMS_NAMES, cosmo_params.tolist())}
         tuple_QU = self.sample_CMB_QU(cosmo_dict)
         map_CMB = np.stack(tuple_QU, axis = 1)
+        '''
         mixing_matrix = self.sample_mixing_matrix(sampled_beta)
         map_Sync = np.stack([maps[0:self.Npix], maps[self.Npix:2*self.Npix]], axis = 1)
         map_Dust = np.stack([maps[2*self.Npix:3*self.Npix], maps[3*self.Npix:]], axis = 1)
@@ -109,6 +111,8 @@ class Sampler:
             dot_prod.append(m)
 
         sky_map = np.stack(dot_prod, axis = 0)
+        '''
+        sky_map = map_CMB
 
         return {"sky_map": sky_map, "cosmo_params": cosmo_params, "betas": sampled_beta}
 

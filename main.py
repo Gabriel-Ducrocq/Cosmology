@@ -10,7 +10,7 @@ import time
 NSIDE = 1
 sigma_rbf = 100000
 N_PROCESS_MAX = 45
-N_sample = 20000
+N_sample = 30000
 
 COSMO_PARAMS_NAMES = ["n_s", "omega_b", "omega_cdm", "100*theta_s", "ln10^{10}A_s", "tau_reio"]
 COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
@@ -27,7 +27,6 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
-    '''
     reference_data = np.load("data/reference_values/reference_data_simplified.npy")
     sampler = Sampler(NSIDE)
 
@@ -38,7 +37,6 @@ def main(NSIDE):
     print(time_elapsed)
     with open("data/simulations/results_simplified", "wb") as f:
         pickle.dump(all_results, f)
-    '''
 
     with open("data/simulations/results_simplified", "rb") as f:
         all_results = pickle.load(f)
@@ -51,9 +49,6 @@ def main(NSIDE):
         discr_Inf.append(res["discrepency_Inf"])
         cosmo_sample.append(res["cosmo_params"])
 
-    reference_cosmo = np.load("data/reference_values/reference_cosmo_simplified.npy")
-
-    '''
     plt.hist(discr_L2)
     plt.title("Discrepencies for L2 distance simplified model")
     plt.savefig("data/graphics/hist_discr_L2_simplified.png")
@@ -63,8 +58,8 @@ def main(NSIDE):
     plt.title("Discrepencies for Inf distance simplified model")
     plt.savefig("data/graphics/hist_discr_Inf_simplified.png")
     plt.close()
-    '''
 
+    '''
     epsilon_l2 = 1750
     epsilon_inf = 5
 
@@ -74,6 +69,7 @@ def main(NSIDE):
     graph_dist_vs_theta(discr_L2, cosmo_sample, reference_cosmo)
     graph_dist_vs_dist_theta(discr_L2, cosmo_sample, reference_cosmo)
 
+    '''
     '''
     discrepencies = []
     for dico in all_results:
