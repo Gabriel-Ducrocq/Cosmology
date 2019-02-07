@@ -27,6 +27,7 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
+    '''
     reference_data = np.load("data/reference_values/reference_data_simplified.npy")
     sampler = Sampler(NSIDE)
 
@@ -35,9 +36,12 @@ def main(NSIDE):
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.time() - time_start
     print(time_elapsed)
-
     with open("data/simulations/results_simplified", "wb") as f:
         pickle.dump(all_results, f)
+    '''
+
+    with open("data/simulations/results_simplified", "rb") as f:
+        all_results = pickle.load(f)
 
     discr_L2 = []
     discr_Inf = []
