@@ -115,8 +115,6 @@ class Sampler:
 
 
 
-
-
 #sampler = Sampler(NSIDE)
 #r = sampler.sample_model(1)
 #['beta_d' 'temp' 'beta_pl']
