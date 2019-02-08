@@ -59,8 +59,9 @@ def main(NSIDE):
     for i in range(len(by_pixels_inf)):
         plt.hist(by_pixels_inf[i], density = True, alpha=0.5, label="Inf")
         plt.hist(by_pixels_sup[i], density=True, alpha=0.5, label="Sup")
-        plt.title("Histogram CMB")
-        plt.savefig("data/graphics/CMB_histogram.png")
+        plt.title("Histogram CMB pixel " + str(i))
+        plt.savefig("data/graphics/CMB_histogram_" + str(i) + ".png")
+        plt.close()
 
     '''
     discr_L2 = []
