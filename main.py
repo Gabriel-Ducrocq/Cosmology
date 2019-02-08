@@ -27,7 +27,6 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
-    '''
     reference_data = np.load("data/reference_values/reference_data_simplified.npy")
     sampler = Sampler(NSIDE)
 
@@ -36,12 +35,23 @@ def main(NSIDE):
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.time() - time_start
     print(time_elapsed)
-    with open("data/simulations/results_simplified", "wb") as f:
+    with open("data/simulations/results_sup", "wb") as f:
         pickle.dump(all_results, f)
 
-    with open("data/simulations/results_simplified", "rb") as f:
+    with open("data/simulations/results_sup", "rb") as f:
         all_results = pickle.load(f)
 
+    sky_maps = []
+    for res in all_results:
+        sky_maps.append(res["sky_map"].flatten().tolist())
+
+    by_pixels = zip(*sky_maps)
+    for i in range(12):
+        plt.hist(by_pixels[i])
+        plt.title("Histogram CMB sup")
+        plt.save("data/graphics/sup_CMB_histogram.png")
+
+    '''
     discr_L2 = []
     discr_Inf = []
     cosmo_sample = []
@@ -59,6 +69,7 @@ def main(NSIDE):
     plt.title("Discrepencies for Inf distance simplified model")
     plt.savefig("data/graphics/hist_discr_Inf_simplified.png")
     plt.close()
+    '''
     '''
     with open("data/simulations/results_simplified", "rb") as f:
         all_results = pickle.load(f)
@@ -81,7 +92,7 @@ def main(NSIDE):
 
     graph_dist_vs_theta(discr_L2, cosmo_sample, reference_cosmo)
     graph_dist_vs_dist_theta(discr_L2, cosmo_sample, reference_cosmo)
-
+    '''
     '''
     discrepencies = []
     for dico in all_results:

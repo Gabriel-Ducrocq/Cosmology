@@ -62,7 +62,8 @@ class Sampler:
         return np.random.multivariate_normal(mu, sigma, s)
 
     def sample_model_parameters(self):
-        sampled_cosmo = self.sample_normal(self.cosmo_means, self.cosmo_var)
+        #sampled_cosmo = self.sample_normal(self.cosmo_means, self.cosmo_var)
+        sampled_cosmo = np.array([0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]) + 2*np.array(COSMO_PARAMS_SIGMA)
         #sampled_beta = self.sample_normal(self.matrix_mean, self.matrix_var).reshape((self.Npix, -1), order = "F")
         sampled_beta = self.matrix_mean.reshape((self.Npix, -1), order = "F")
         return sampled_cosmo, sampled_beta
@@ -76,7 +77,6 @@ class Sampler:
         self.cosmo.compute()
         cls = self.cosmo.lensed_cl(L_MAX_SCALARS)
         eb_tb = np.zeros(shape=cls["tt"].shape)
-        print(cls["tt"].shape)
         _, Q, U = hp.synfast((cls['tt'], cls['ee'], cls['bb'], cls['te'], eb_tb, eb_tb), nside=self.NSIDE, new=True)
         self.cosmo.struct_cleanup()
         self.cosmo.empty()
@@ -93,7 +93,7 @@ class Sampler:
 
     def sample_model(self):
         cosmo_params, sampled_beta = self.sample_model_parameters()
-        maps = self.sample_normal(self.templates_map, self.templates_var)
+        #maps = self.sample_normal(self.templates_map, self.templates_var)
 
         cosmo_dict = {l[0]: l[1] for l in zip(COSMO_PARAMS_NAMES, cosmo_params.tolist())}
         tuple_QU = self.sample_CMB_QU(cosmo_dict)
