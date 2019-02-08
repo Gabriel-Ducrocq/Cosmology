@@ -27,6 +27,7 @@ def pipeline(tuple_input):
 
 
 def main(NSIDE):
+    '''
     reference_data = np.load("data/reference_values/reference_data_simplified.npy")
     sampler = Sampler(NSIDE)
 
@@ -38,18 +39,28 @@ def main(NSIDE):
     with open("data/simulations/results_inf", "wb") as f:
         pickle.dump(all_results, f)
 
+    '''
     with open("data/simulations/results_inf", "rb") as f:
-        all_results = pickle.load(f)
+        all_results_inf = pickle.load(f)
 
-    sky_maps = []
-    for res in all_results:
-        sky_maps.append(res["sky_map"].flatten().tolist())
+    with open("data/simulations/results_sup", "rb") as f:
+        all_results_sup = pickle.load(f)
 
-    by_pixels = zip(*sky_maps)
-    for i in range(12):
-        plt.hist(by_pixels[i])
-        plt.title("Histogram CMB sup")
-        plt.save("data/graphics/sup_CMB_histogram.png")
+    sky_maps_inf = []
+    sky_maps_sup = []
+    for res in all_results_sup:
+        sky_maps_sup.append(res["sky_map"].flatten().tolist())
+
+    for res in all_results_inf:
+        sky_maps_inf.append(res["sky_map"].flatten().tolist())
+
+    by_pixels_sup = list(zip(*sky_maps_sup))
+    by_pixels_inf = list(zip(*sky_maps_inf))
+    for i in range(len(by_pixels_inf)):
+        plt.hist(by_pixels_inf[i], density = True, alpha=0.5, label="Inf")
+        plt.hist(by_pixels_sup[i], density=True, alpha=0.5, label="Sup")
+        plt.title("Histogram CMB")
+        plt.save("data/graphics/CMB_histogram.png")
 
     '''
     discr_L2 = []
