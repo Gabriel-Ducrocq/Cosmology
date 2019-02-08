@@ -17,6 +17,7 @@ COSMO_PARAMS_MEANS = [0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]
 COSMO_PARAMS_SIGMA = [0.0038, 0.00014, 0.00091, 0.00029, 0.014, 0.0071]
 
 def pipeline(tuple_input):
+    '''
     sampler, reference_data = tuple_input
     sampled = sampler.sample_model()
     sim_data = sampled["sky_map"]
@@ -58,6 +59,23 @@ def main(NSIDE):
     plt.title("Discrepencies for Inf distance simplified model")
     plt.savefig("data/graphics/hist_discr_Inf_simplified.png")
     plt.close()
+    '''
+    with open("data/simulations/results_simplified", "rb") as f:
+        all_results = pickle.load(f)
+
+    discr_L2 = []
+    discr_Inf = []
+    cosmo_sample = []
+    for res in all_results:
+        discr_L2.append(res["discrepency_L2"])
+        discr_Inf.append(res["discrepency_Inf"])
+        cosmo_sample.append(res["cosmo_params"])
+
+    epsilon_l2 = np.linspace(0.10*(1e-13), 0.20*(1e-13), 10000)
+    epsilon_inf = np.linspace(0.1*(1e-7), 0.4*(1e-7), 10000)
+
+    compute_acceptance_rates(discr_L2, epsilon_l2, "Acceptance rate simplified", "data/graphics/hist_discr_L2_simplified.png")
+    compute_acceptance_rates(discr_Inf, epsilon_inf, "Acceptance rate simplified","data/graphics/hist_discr_Inf_simplified.png")
 
     '''
     epsilon_l2 = 1750
