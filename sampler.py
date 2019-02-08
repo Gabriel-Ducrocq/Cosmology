@@ -63,7 +63,7 @@ class Sampler:
 
     def sample_model_parameters(self):
         #sampled_cosmo = self.sample_normal(self.cosmo_means, self.cosmo_var)
-        sampled_cosmo = np.array([0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]) + 2*np.array(COSMO_PARAMS_SIGMA)
+        sampled_cosmo = np.array([0.9665, 0.02242, 0.11933, 1.04101, 3.047, 0.0561]) - 2*np.array(COSMO_PARAMS_SIGMA)
         #sampled_beta = self.sample_normal(self.matrix_mean, self.matrix_var).reshape((self.Npix, -1), order = "F")
         sampled_beta = self.matrix_mean.reshape((self.Npix, -1), order = "F")
         return sampled_cosmo, sampled_beta

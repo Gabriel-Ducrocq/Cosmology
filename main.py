@@ -35,10 +35,10 @@ def main(NSIDE):
     all_results = pool.map(pipeline, ((sampler, reference_data, ) for _ in range(N_sample)))
     time_elapsed = time.time() - time_start
     print(time_elapsed)
-    with open("data/simulations/results_sup", "wb") as f:
+    with open("data/simulations/results_inf", "wb") as f:
         pickle.dump(all_results, f)
 
-    with open("data/simulations/results_sup", "rb") as f:
+    with open("data/simulations/results_inf", "rb") as f:
         all_results = pickle.load(f)
 
     sky_maps = []
