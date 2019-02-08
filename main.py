@@ -60,6 +60,7 @@ def main(NSIDE):
         plt.hist(by_pixels_inf[i], density = True, alpha=0.5, label="Inf")
         plt.hist(by_pixels_sup[i], density=True, alpha=0.5, label="Sup")
         plt.title("Histogram CMB pixel " + str(i))
+        plt.legend(loc='upper right')
         plt.savefig("data/graphics/CMB_histogram_" + str(i) + ".png")
         plt.close()
 
