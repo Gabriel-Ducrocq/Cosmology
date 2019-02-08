@@ -74,8 +74,8 @@ def main(NSIDE):
     epsilon_l2 = np.linspace(0.10*(1e-13), 0.20*(1e-13), 10000)
     epsilon_inf = np.linspace(0.1*(1e-7), 0.4*(1e-7), 10000)
 
-    compute_acceptance_rates(discr_L2, epsilon_l2, "Acceptance rate simplified", "data/graphics/hist_discr_L2_simplified.png")
-    compute_acceptance_rates(discr_Inf, epsilon_inf, "Acceptance rate simplified","data/graphics/hist_discr_Inf_simplified.png")
+    compute_acceptance_rates(discr_L2, epsilon_l2, "Acceptance rate simplified", "data/graphics/acc_rate_L2_simplified.png")
+    compute_acceptance_rates(discr_Inf, epsilon_inf, "Acceptance rate simplified","data/graphics/acc_rate_Inf_simplified.png")
 
     '''
     epsilon_l2 = 1750
