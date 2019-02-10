@@ -7,6 +7,7 @@ import multiprocessing as mp
 import matplotlib.pyplot as plt
 import time
 from scipy import stats
+from matplotlib import cm
 
 NSIDE = 1
 sigma_rbf = 100000
@@ -75,6 +76,27 @@ def main(NSIDE):
             mat_corr_inf[i,j] = corr[0]
 
 
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    cmap = cm.get_cmap('jet', 30)
+    cax = ax1.imshow(mat_corr_sup, interpolation="nearest", cmap=cmap)
+    ax1.grid(True)
+    plt.title('Correlations Sup')
+    # Add colorbar, make sure to specify tick locations to match desired ticklabels
+    fig.colorbar(cax, ticks= np.linspace(-1, 1, 0.05).tolist())
+    plt.savefig("graphics/correlations_sup.png")
+    plt.close()
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    cmap = cm.get_cmap('jet', 30)
+    cax = ax1.imshow(mat_corr_inf, interpolation="nearest", cmap=cmap)
+    ax1.grid(True)
+    plt.title('Correlations Inf')
+    # Add colorbar, make sure to specify tick locations to match desired ticklabels
+    fig.colorbar(cax, ticks= np.linspace(-1, 1, 0.05).tolist())
+    plt.savefig("graphics/correlations_inf.png")
+    plt.close()
 
 
     '''
