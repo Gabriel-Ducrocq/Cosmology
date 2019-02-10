@@ -61,10 +61,9 @@ def main(NSIDE):
     by_pixels_sup = list(zip(*sky_maps_sup))
     by_pixels_inf = list(zip(*sky_maps_inf))
 
-    print(len(by_pixels_sup[0]))
-    print(len(by_pixels_inf[0]))
+    print(len(by_pixels_sup))
     mat_corr_sup = np.zeros((12*NSIDE, 12*NSIDE))
-    mat_corr_inf = np.zeros((12 * NSIDE, 12 * NSIDE))
+    mat_corr_inf = np.zeros((12 *NSIDE, 12*NSIDE))
     for i, l1 in enumerate(by_pixels_sup):
         for j, l2 in enumerate(by_pixels_sup):
             print(i)
