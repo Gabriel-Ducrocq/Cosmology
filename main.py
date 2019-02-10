@@ -68,12 +68,12 @@ def main(NSIDE):
     for i, l1 in enumerate(by_pixels_sup):
         for j, l2 in enumerate(by_pixels_sup):
             corr = stats.pearsonr(l1, l2)
-            mat_corr_sup[i,j] = corr
+            mat_corr_sup[i,j] = corr[0]
 
     for i, l1 in enumerate(by_pixels_inf):
         for j, l2 in enumerate(by_pixels_inf):
             corr = stats.pearsonr(l1, l2)
-            mat_corr_inf[i,j] = corr
+            mat_corr_inf[i,j] = corr[0]
 
 
 
