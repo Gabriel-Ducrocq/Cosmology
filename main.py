@@ -6,6 +6,7 @@ import pickle
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 import time
+from scipy import stats
 
 NSIDE = 1
 sigma_rbf = 100000
@@ -46,6 +47,9 @@ def main(NSIDE):
     with open("data/simulations/results_sup", "rb") as f:
         all_results_sup = pickle.load(f)
 
+
+
+
     sky_maps_inf = []
     sky_maps_sup = []
     for res in all_results_sup:
@@ -56,13 +60,23 @@ def main(NSIDE):
 
     by_pixels_sup = list(zip(*sky_maps_sup))
     by_pixels_inf = list(zip(*sky_maps_inf))
-    for i in range(len(by_pixels_inf)):
-        plt.hist(by_pixels_inf[i], density = True, alpha=0.5, label="Inf")
-        plt.hist(by_pixels_sup[i], density=True, alpha=0.5, label="Sup")
-        plt.title("Histogram CMB pixel " + str(i))
-        plt.legend(loc='upper right')
-        plt.savefig("data/graphics/CMB_histogram_" + str(i) + ".png")
-        plt.close()
+
+    print(len(by_pixels_sup[0]))
+    print(len(by_pixels_inf[0]))
+    mat_corr_sup = np.zeros((12*NSIDE, 12*NSIDE))
+    mat_corr_inf = np.zeros((12 * NSIDE, 12 * NSIDE))
+    for i, l1 in by_pixels_sup:
+        for j, l2 in by_pixels_sup:
+            corr = stats.pearsonr(l1, l2)
+            mat_corr_sup[i,j] = corr
+
+    for i, l1 in by_pixels_inf:
+        for j, l2 in by_pixels_inf:
+            corr = stats.pearsonr(l1, l2)
+            mat_corr_inf[i,j] = corr
+
+
+
 
     '''
     discr_L2 = []
