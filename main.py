@@ -83,7 +83,7 @@ def main(NSIDE):
     ax1.grid(True)
     plt.title('Correlations Sup')
     # Add colorbar, make sure to specify tick locations to match desired ticklabels
-    fig.colorbar(cax, ticks= np.linspace(-1, 1, 0.05).tolist())
+    fig.colorbar(cax, ticks= np.linspace(-1, 1, 40).tolist())
     plt.savefig("data/graphics/correlations_sup.png")
     plt.close()
 
