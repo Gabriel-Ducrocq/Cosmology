@@ -62,7 +62,6 @@ def main(NSIDE):
     by_pixels_sup = list(zip(*sky_maps_sup))
     by_pixels_inf = list(zip(*sky_maps_inf))
 
-    print(len(by_pixels_sup))
     mat_corr_sup = np.zeros((2*12*NSIDE, 2*12*NSIDE))
     mat_corr_inf = np.zeros((2*12 *NSIDE, 2*12*NSIDE))
     for i, l1 in enumerate(by_pixels_sup):
@@ -96,6 +95,18 @@ def main(NSIDE):
     # Add colorbar, make sure to specify tick locations to match desired ticklabels
     fig.colorbar(cax, ticks= np.linspace(-1, 1, 40).tolist())
     plt.savefig("data/graphics/correlations_inf.png")
+    plt.close()
+
+    diff_m = np.abs(mat_corr_sup, mat_corr_inf)
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    cmap = cm.get_cmap('jet', 30)
+    cax = ax1.imshow(diff_m, interpolation="nearest", cmap=cmap)
+    ax1.grid(True)
+    plt.title('Correlations differences')
+    # Add colorbar, make sure to specify tick locations to match desired ticklabels
+    fig.colorbar(cax, ticks= np.linspace(0, 1, 20).tolist())
+    plt.savefig("data/graphics/correlations_differences.png")
     plt.close()
 
 
