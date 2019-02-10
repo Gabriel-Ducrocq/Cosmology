@@ -65,13 +65,13 @@ def main(NSIDE):
     print(len(by_pixels_inf[0]))
     mat_corr_sup = np.zeros((12*NSIDE, 12*NSIDE))
     mat_corr_inf = np.zeros((12 * NSIDE, 12 * NSIDE))
-    for i, l1 in by_pixels_sup:
-        for j, l2 in by_pixels_sup:
+    for i, l1 in enumerate(by_pixels_sup):
+        for j, l2 in enumerate(by_pixels_sup):
             corr = stats.pearsonr(l1, l2)
             mat_corr_sup[i,j] = corr
 
-    for i, l1 in by_pixels_inf:
-        for j, l2 in by_pixels_inf:
+    for i, l1 in enumerate(by_pixels_inf):
+        for j, l2 in enumerate(by_pixels_inf):
             corr = stats.pearsonr(l1, l2)
             mat_corr_inf[i,j] = corr
 
