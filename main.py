@@ -69,8 +69,8 @@ def main(NSIDE):
         for j, l2 in enumerate(by_pixels_sup):
             print(i)
             print(j)
-            print(l1.shape)
-            print(l2.shape)
+            print(len(l1))
+            print(len(l2))
             corr = stats.pearsonr(l1, l2)
             mat_corr_sup[i,j] = corr[0]
 
