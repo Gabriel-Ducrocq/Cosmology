@@ -62,14 +62,10 @@ def main(NSIDE):
     by_pixels_inf = list(zip(*sky_maps_inf))
 
     print(len(by_pixels_sup))
-    mat_corr_sup = np.zeros((12*NSIDE, 12*NSIDE))
-    mat_corr_inf = np.zeros((12 *NSIDE, 12*NSIDE))
+    mat_corr_sup = np.zeros((2*12*NSIDE, 2*12*NSIDE))
+    mat_corr_inf = np.zeros((2*12 *NSIDE, 2*12*NSIDE))
     for i, l1 in enumerate(by_pixels_sup):
         for j, l2 in enumerate(by_pixels_sup):
-            print(i)
-            print(j)
-            print(len(l1))
-            print(len(l2))
             corr = stats.pearsonr(l1, l2)
             mat_corr_sup[i,j] = corr[0]
 
