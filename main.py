@@ -97,7 +97,7 @@ def main(NSIDE):
     plt.savefig("data/graphics/correlations_inf.png")
     plt.close()
 
-    diff_m = np.abs(mat_corr_sup, mat_corr_inf)
+    diff_m = np.abs(mat_corr_sup - mat_corr_inf)
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
     cmap = cm.get_cmap('jet', 30)
