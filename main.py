@@ -84,7 +84,7 @@ def main(NSIDE):
     plt.title('Correlations Sup')
     # Add colorbar, make sure to specify tick locations to match desired ticklabels
     fig.colorbar(cax, ticks= np.linspace(-1, 1, 0.05).tolist())
-    plt.savefig("graphics/correlations_sup.png")
+    plt.savefig("data/graphics/correlations_sup.png")
     plt.close()
 
     fig = plt.figure()
@@ -95,7 +95,7 @@ def main(NSIDE):
     plt.title('Correlations Inf')
     # Add colorbar, make sure to specify tick locations to match desired ticklabels
     fig.colorbar(cax, ticks= np.linspace(-1, 1, 0.05).tolist())
-    plt.savefig("graphics/correlations_inf.png")
+    plt.savefig("data/graphics/correlations_inf.png")
     plt.close()
 
 
